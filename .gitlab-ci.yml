@@ -1,0 +1,14 @@
+image: pobj
+
+stages:
+- test
+
+TME-4:
+  script: >
+    /home/pobj/run5.sh -id TME-4 -name TME-4
+    pobj.multiset.test.HashMultiSetTest
+    pobj.multiset.test.IteratorTest
+    pobj.multiset.test.CollectionTest
+  artifacts:
+    reports:
+      junit: report.xml
