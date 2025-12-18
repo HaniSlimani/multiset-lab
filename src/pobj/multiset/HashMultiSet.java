@@ -28,11 +28,18 @@ public class HashMultiSet<T> extends AbstractCollection<T> implements MultiSet<T
         }
     }
 
+    // Ajout avec nombre d'occurrences
     @Override
     public boolean add(T e, int count) {
-        if (count <= 0) return false;
+        if (count < 0) {
+            throw new IllegalArgumentException("add: count must be >= 0");
+        }
+        if (count == 0) return false; // opération inutile
+
         map.put(e, map.getOrDefault(e, 0) + count);
         size += count;
+
+        assert isConsistent(); // vérification de la cohérence interne
         return true;
     }
 
@@ -49,7 +56,11 @@ public class HashMultiSet<T> extends AbstractCollection<T> implements MultiSet<T
     @SuppressWarnings("unchecked")
     @Override
     public boolean remove(Object e, int count) {
-        if (count <= 0 || !map.containsKey(e)) return false;
+        if (count < 0) {
+            throw new IllegalArgumentException("remove: count must be >= 0");
+        }
+        if (count == 0 || !map.containsKey(e)) return false;
+
         int currentCount = map.get((T) e);
         if (currentCount <= count) {
             map.remove(e);
@@ -58,6 +69,8 @@ public class HashMultiSet<T> extends AbstractCollection<T> implements MultiSet<T
             map.put((T) e, currentCount - count);
             size -= count;
         }
+
+        assert isConsistent(); // vérification de la cohérence interne
         return true;
     }
 
@@ -70,11 +83,23 @@ public class HashMultiSet<T> extends AbstractCollection<T> implements MultiSet<T
     public void clear() {
         map.clear();
         size = 0;
+
+        assert isConsistent();
     }
 
     @Override
     public int size() {
         return size;
+    }
+
+    // Méthode de vérification de cohérence interne
+    public boolean isConsistent() {
+        int sum = 0;
+        for (Integer count : map.values()) {
+            if (count <= 0) return false;
+            sum += count;
+        }
+        return sum == size;
     }
 
     // Itérateur
@@ -117,10 +142,32 @@ public class HashMultiSet<T> extends AbstractCollection<T> implements MultiSet<T
         public void remove() {
             throw new UnsupportedOperationException("Remove not supported by this iterator");
         }
-        
+
     }
+
     @Override
     public List<T> elements() {
         return new ArrayList<>(map.keySet());
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+
+        Iterator<Map.Entry<T, Integer>> it = map.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<T, Integer> entry = it.next();
+            sb.append(entry.getKey())
+              .append(":")
+              .append(entry.getValue());
+            if (it.hasNext()) {
+                sb.append("; ");
+            }
+        }
+
+        sb.append("]");
+        return sb.toString();
+    }
+
 }

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import pobj.multiset.HashMultiSet;
-import pobj.multiset.MultiSet;
+import pobj.multiset.*;
 
 public class HashMultiSetTest {
 	
@@ -14,7 +14,7 @@ public class HashMultiSetTest {
 	
 	@BeforeEach
 	public void before() {
-		m = new HashMultiSet<>();
+		m = new MultiSetDecorator<>(new HashMultiSet<>());
 		m.add("a");
 		m.add("a",5);
 		m.add("b",3);

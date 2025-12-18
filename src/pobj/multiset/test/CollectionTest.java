@@ -6,13 +6,13 @@ import java.util.Collection;
 
 import org.junit.jupiter.api.Test;
 
-import pobj.multiset.HashMultiSet;
+import pobj.multiset.*;
 
 public class CollectionTest {
 
 	@Test
 	public void testImplementsCollection() {
-		HashMultiSet<String> m = new HashMultiSet<>();
-		assertTrue(m instanceof Collection);
+	    HashMultiSet<String> m = new HashMultiSet<>();
+	    assertTrue(m instanceof Collection);
 	}
 }

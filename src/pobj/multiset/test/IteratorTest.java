@@ -8,14 +8,14 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import pobj.multiset.HashMultiSet;
+import pobj.multiset.*;
 
 public class IteratorTest {
 
 	@SuppressWarnings("unused")
 	@Test
 	public void testIteratorVide() {
-		HashMultiSet<String> m = new HashMultiSet<>();
+		MultiSet<String> m = new MultiSetDecorator<>(new HashMultiSet<>());
 		for (String s : m) {
 			assertTrue(false);
 		}
@@ -23,7 +23,7 @@ public class IteratorTest {
 	
 	@Test
 	public void testIterator() {
-		HashMultiSet<String> m = new HashMultiSet<>();
+		MultiSet<String> m = new MultiSetDecorator<>(new HashMultiSet<>());
 		List<String> l = new ArrayList<>();
 		m.add("b");
 		m.add("a",3);
@@ -40,4 +40,5 @@ public class IteratorTest {
 		assertEquals("c", l.get(4));
 		assertEquals("c", l.get(5));
 	}
+	
 }

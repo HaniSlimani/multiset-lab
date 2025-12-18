@@ -10,21 +10,21 @@ import java.util.List;
 public class WordCount {
 
     public static void wordcount(MultiSet<String> ms, String filename) throws IOException {
-        // Lecture du fichier et remplissage du multi-ensemble
         BufferedReader br = new BufferedReader(new FileReader(filename));
         String line;
         while ((line = br.readLine()) != null) {
-            for (String word : line.split("\\P{L}+")) { // séparer par tout ce qui n'est pas une lettre
-                if (word.equals("")) continue; 
-                ms.add(word.toLowerCase()); // mettre en minuscule pour uniformiser
+            for (String word : line.split("\\P{L}+")) {
+                if (word.equals("")) continue;
+                ms.add(word.toLowerCase());
             }
         }
         br.close();
 
-        // Récupération des éléments uniques
+        // >>> AJOUT POUR LA QUESTION 5.3 <<<
+        System.out.println(ms);
+
         List<String> words = ms.elements();
 
-        // Tri par fréquence décroissante
         Collections.sort(words, new Comparator<String>() {
             @Override
             public int compare(String w1, String w2) {
@@ -32,7 +32,6 @@ public class WordCount {
             }
         });
 
-        // Affichage des 10 premiers mots les plus fréquents
         System.out.println("Top 10 mots les plus fréquents :");
         for (int i = 0; i < Math.min(10, words.size()); i++) {
             String w = words.get(i);
@@ -40,18 +39,35 @@ public class WordCount {
         }
     }
 
-    // Méthode main pour exécuter l'application
     public static void main(String[] args) {
         if (args.length != 1) {
             System.out.println("Usage : java WordCount <fichier.txt>");
             return;
         }
         String filename = args[0];
-        MultiSet<String> ms = new HashMultiSet<>();
+
+        System.out.println("=== HashMultiSet ===");
+        MultiSet<String> hashMs = new MultiSetDecorator<>(new HashMultiSet<>());        long start = System.currentTimeMillis();
         try {
-            wordcount(ms, filename);
+            wordcount(hashMs, filename);
         } catch (IOException e) {
             System.err.println("Erreur lecture fichier : " + e.getMessage());
         }
+        long end = System.currentTimeMillis();
+        System.out.println("temps écoulé : " + (end - start) + " millisecondes\n");
+
+        /*
+        System.out.println("=== NaiveMultiSet ===");
+        MultiSet<String> naiveMs = new MultiSetDecorator<>(new NaiveMultiSet<>());
+        start = System.currentTimeMillis();
+        try {
+            wordcount(naiveMs, filename);
+        } catch (IOException e) {
+            System.err.println("Erreur lecture fichier : " + e.getMessage());
+        }
+        end = System.currentTimeMillis();
+        System.out.println("temps écoulé : " + (end - start) + " millisecondes");
+        */ 
     }
 }
+
