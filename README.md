@@ -12,3 +12,7 @@ Instructions succinctes de rendu :
 Voir les énoncés de TME et les instructions détaillées de rendu sur le [Moodle du cours](https://moodle-sciences-25.sorbonne-universite.fr/).
 
 L'intégration continue exécute le script `.gitlab-ci.yml`, qui précise la liste des classes de test unitaire. Vous pouvez ajouter vos propres tests à cette liste.
+
+## Auteurs
+- Slimani Hani
+- Akka Boutaina
